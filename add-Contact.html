@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <!-- Heading and paragraph ------------------------------------------------------>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <!--------------------------------------------------------------------------->
+    </head>
+    <body>
+         <!-- Heading and paragraph ------------------------------------------------------>
+        <div class="header mx-auto text-center">
+            <h4>Contact Book App</h4>
+        </div>
+        <!--------------------------------------------------------------------------->
+        <hr/>
+        <!-- inserts form  -->
+        <form id="editForm">
+            <label for="firstname">First name :</label>
+            <input type="text" name="firstname" id="firstname">
+            <br/> <br/>
+            <label for="firstname">Last name :</label>
+            <input type="text" name="lasttname" id="firstname">
+            <br/><br/>
+            <label for="mobile">Mobile :</label>
+            <input type="text" name="mobile" id="mobile">
+            <br/><br/>
+            <label for="email">Email :</label>
+            <input type="text" name="email" id="email">
+            <br/><br/>
+            <label for="avatar">Select a file</label>
+            <input type="file" name="avatar" id="avatar"><br/>
+        </form>
+        <br/>
+         <!-------------------Buttons------------------------------->
+        <div class="edit-buttons">
+             <button type="submit" id="submitForm">Submit</button>
+            <br/>
+            <br/>
+            <button id="homeLink" type="button">Home</button>
+        </div>
+        <!----------------------------------------------------------->
+        <hr>
+        <!-------------------Javascript------------------------------->
+        <script src="config.js"></script>        
+        <script>
+            document.getElementById("submitForm").addEventListener('click', submitForm);
+            document.getElementById("homeLink").addEventListener('click', homeLink);
+        
+            //---Prevents the form's default function--//
+            function submitForm(e){
+                e.preventDefault(); 
+                
+                const form = new FormData(document.querySelector('#editForm'));
+                form.append('apiKey', apiKey);
+                
+                fetch(rootPath + 'controller/insert-contact/', {
+                    method: 'POST',
+                    headers: {'Accept': 'application/json, *.*'},
+                    body:form
+                })
+                .then(function(response){
+                    return response.text();
+                })
+                 //---alerts user when contact is added----//
+                .then(function(data){
+                    if(data == "1"){
+                        alert("Contact added.");
+                        homeLink();                       
+                    }
+                    //--alerts user when there's a error--//
+                    else{ 
+                        alert(data);
+                        homeLink();
+                    }
+                })
+            }
+            
+            function homeLink(){
+                window.open("index.html", "_self");
+            }
+        
+        </script>
+        <!----------------------------------------------------------->
+    </body>
+
+</html>
